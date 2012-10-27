@@ -49,6 +49,7 @@ class Email(object):
 
         self.subject = subject
         self.attachments = []
+        self.reply_to = ''
         self.cc = []
         self.bcc = []
         self.body = body
@@ -75,6 +76,9 @@ class Email(object):
         msg['Subject'] = self.subject
         msg['From'] = self.sender
         msg['To'] = ', '.join(self.recipients)
+        if self.reply_to:
+            msg['Reply-To'] = self.reply_to
+        msg['Date'] = formatdate(localtime=True)
 
         if self.body_is_html:
             body = MIMEText(self.body, 'html')
