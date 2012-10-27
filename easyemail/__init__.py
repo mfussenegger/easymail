@@ -11,13 +11,21 @@ from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formatdate
 logger = logging.getLogger('easyemail')
 
 
 class Attachment(object):
-    def __init__(self, path, mimetype=None):
+    def __init__(self, path, mimetype=None, filename=None):
+        """create an attachment
+
+        path: path to the file on disk
+        mimetype: (optional, will be guessed by fileextension
+        filename: filename in the email, if None the name from path will be used
+        """
         self.path = path
         self.mimetype = mimetype or guess_type(path)[0] or 'application/octet-stream'
+        self.filename = filename
 
     def as_msg(self):
         maintype, subtype = self.mimetype.split('/')
@@ -32,9 +40,10 @@ class Attachment(object):
             encoders.encode_base64(msg)
 
         fp.close()
+
         msg.add_header('Content-Disposition',
                        'attachment',
-                       filename=os.path.basename(self.path))
+                       filename=self.filename or os.path.basename(self.path))
         return msg
 
 
