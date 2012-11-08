@@ -1,6 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+easymail
+
+an abstraction layer on top of the standard email package.
+It aims to hide all the troublesome mime stuff and sets some sane defaults.
+All to make your life a little bit easier and make sending emails easier.
+
+>>> e = Email('sender@foo.com', 'recipient@foo.com')
+>>> e.subject = 'urgent!!!1'
+>>> e.body = 'this is very important.'
+>>> e.attachments.append(Attachment('/path/to/audiofile.ogg'))
+
+>>> e.sender
+'sender@foo.com'
+>>> str(e.subject)
+'urgent!!!1'
+>>> e.recipients
+['recipient@foo.com']
+"""
+
 import os
 import logging
 from mimetypes import guess_type
@@ -28,6 +48,10 @@ class Attachment(object):
         self.filename = filename
 
     def as_msg(self):
+        """return the mime msg.
+
+        the results concrete type depends on the attachments mimetype.
+        """
         maintype, subtype = self.mimetype.split('/')
         fp = open(self.path, 'rb')
         if maintype == 'image':
