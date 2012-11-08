@@ -19,6 +19,11 @@ class TestAttachment(TestCase):
         self.assertTrue('audio/mpeg' in str(a.as_msg()))
         self.assertIsInstance(a.as_msg(), MIMEAudio)
 
+    def test_filename_in_header(self):
+        a = Attachment('./tests/440Hz-5sec.mp3')
+        msg = str(a.as_msg())
+        self.assertTrue('attachment; filename="440Hz-5sec.mp3' in msg[:200])
+
 
 class TestEmail(TestCase):
     def test_subject_encoding(self):
