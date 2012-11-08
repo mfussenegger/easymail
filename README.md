@@ -8,8 +8,8 @@ defaults.
 These defaults include:
 
 
-    * using utf-8 encoding by default. 
-    * settings important headers (like Date)
+* using utf-8 encoding by default. 
+* settings important headers (like Date)
 
 
 A simple example:
