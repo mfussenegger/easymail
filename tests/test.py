@@ -52,3 +52,11 @@ class TestEmail(TestCase):
         e = Email('sender@foo.com', 'recipient@foo.com')
         e.subject = 'foo'
         #self.assertEqual('foo', e.as_string())
+
+    def test_all_recipients(self):
+        e = Email('sender@foo.com', 'recipient@foo.com')
+        e.cc.append('cc@foo.com')
+        e.bcc.append('bcc@foo.com')
+        self.assertEqual(e.all_recipients, ['recipient@foo.com',
+                                            'cc@foo.com',
+                                            'bcc@foo.com'])

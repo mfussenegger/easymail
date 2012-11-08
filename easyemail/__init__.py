@@ -65,6 +65,11 @@ class Email(object):
         self.body_is_html = False
 
     @property
+    def all_recipients(self):
+        """recipients including cc and bcc"""
+        return self.recipients + self.cc + self.bcc
+
+    @property
     def subject(self):
         return self._subject
 
