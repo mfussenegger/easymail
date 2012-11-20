@@ -9,7 +9,7 @@ These defaults include:
 
 
 * using utf-8 encoding by default. 
-* settings important headers (like Date)
+* set important headers (like Date)
 
 
 A simple example:

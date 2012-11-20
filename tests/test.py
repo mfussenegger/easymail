@@ -4,7 +4,7 @@
 from email.header import decode_header, Header
 from email.mime.audio import MIMEAudio
 from email.mime.image import MIMEImage
-from easyemail import Email, Attachment
+from easymail import Email, Attachment
 from unittest import TestCase
 
 
@@ -29,16 +29,16 @@ class TestEmail(TestCase):
     def test_subject_encoding(self):
         e = Email('sender@foo.com', 'recipient@foo.com', 'subject', 'body')
         self.assertEqual('subject', str(e.subject))
-        self.assertEqual('utf-8', decode_header(e.subject)[0][1])
-        self.assertIsInstance(e.subject, Header)
+        self.assertEqual('utf-8', decode_header(e._subject)[0][1])
+        self.assertIsInstance(e._subject, Header)
         self.assertEqual('body', e.body)
 
     def test_subject_property(self):
         e = Email('sender@foo.com', 'recipient@foo.com')
         e.subject = 'subject'
         self.assertEqual('subject', str(e.subject))
-        self.assertEqual('utf-8', decode_header(e.subject)[0][1])
-        self.assertIsInstance(e.subject, Header)
+        self.assertEqual('utf-8', decode_header(e._subject)[0][1])
+        self.assertIsInstance(e._subject, Header)
 
     def test_recipients(self):
         e = Email('sender@foo.com', 'recipient1@foo.com')
@@ -50,8 +50,14 @@ class TestEmail(TestCase):
 
     def test_as_string(self):
         e = Email('sender@foo.com', 'recipient@foo.com')
-        e.subject = 'foo'
-        #self.assertEqual('foo', e.as_string())
+        e.subject = 'äää ööö üfoo äß'
+        e.body = 'ääää'
+        self.assertTrue('Content-Type: text/plain; charset="utf-8"' in str(e))
+
+    def test_as_string_empty_body(self):
+        e = Email('sender@foo.com', 'recipient@foo.com')
+        e.subject = 'äää ööö üfoo äß'
+        self.assertTrue('Content-Type: text/plain; charset="us-ascii"' in str(e))
 
     def test_all_recipients(self):
         e = Email('sender@foo.com', 'recipient@foo.com')

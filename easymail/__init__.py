@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+__version__ = '0.1.0'
+
 """
 easymail
 
@@ -33,6 +35,12 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
 logger = logging.getLogger('easyemail')
+
+try:
+    unicode
+except NameError:
+    # Python3
+    basestring = unicode = str
 
 
 class Attachment(object):
@@ -88,6 +96,12 @@ class Email(object):
         self.body = body
         self.body_is_html = False
 
+    def __repr__(self):
+        return '<Email>'
+
+    def __str__(self):
+        return self.get_msg()
+
     @property
     def all_recipients(self):
         """recipients including cc and bcc"""
@@ -95,23 +109,25 @@ class Email(object):
 
     @property
     def subject(self):
-        return self._subject
+        return unicode(self._subject)
 
     @subject.setter
     def subject(self, value):
-        if isinstance(value, str):
+        if isinstance(value, basestring):
             self._subject = Header(value, 'utf-8')
         else:
             self._subject = value
-        assert isinstance(self.subject, Header)
+        assert isinstance(self._subject, Header)
 
-    def as_string(self):
+    def get_msg(self):
+        charset = self.body != '' and 'utf-8' or 'us-ascii'
+
         if self.attachments or self.body_is_html:
             msg = MIMEMultipart()
         else:
-            msg = MIMEText(self.body, 'plain')
+            msg = MIMEText(self.body, _charset=charset)
 
-        msg['Subject'] = self.subject
+        msg['Subject'] = self._subject
         msg['From'] = self.sender
         msg['To'] = ', '.join(self.recipients)
         if self.reply_to:
@@ -119,13 +135,13 @@ class Email(object):
         msg['Date'] = formatdate(localtime=True)
 
         if self.body_is_html:
-            body = MIMEText(self.body, 'html')
+            body = MIMEText(self.body, 'html', charset)
             msg.attach(body)
 
         if self.attachments:
             for attachment in self.attachments:
                 msg.attach(attachment.as_msg())
 
-        result = msg.as_string()
+        result = str(msg)
         logger.debug(result)
         return result
