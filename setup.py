@@ -13,7 +13,7 @@ setup(
     license='LICENSE.txt',
     description='abstraction layer on top of the email package to make sending\
     emails a little bit easier',
-    py_modules=['easymail'],
+    packages=['easymail'],
     install_requires=[
     ]
 )
