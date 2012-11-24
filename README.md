@@ -7,30 +7,41 @@ defaults.
 
 These defaults include:
 
-
 * using utf-8 encoding by default. 
-* set important headers (like Date)
+* important headers (like Date)
 
 
 A simple example:
 
     from easymail import Email
     from smtplib import SMTP
-    e = Email('mymail@somedomain.com', 'recipient@otherdomain.org')
+    e = Email('My Name <mymail@somedomain.com>', 'recipient@otherdomain.org')
     e.subject = 'hello world'
     e.body = 'with some non-äscii charöcters'
 
     smtp = SMTP('mymailserver.com')
     smtp.sendmail(*e.args)
 
-This is a work in progress. The API is unstable, so best not use this just yet.
+Slightly more advanced:
 
-You've been warned.
+    from easymail import Email, Attachment
+    from smtplib import SMTP
+    e = Email('My Name <mymail@somedomain.com>', 'recipient@otherdomain.org')
+    e.subject = 'hello world'
+    e.body = 'with some non-äscii charöcters'
+
+    e.attachments.append(Attachment('./path/to/picture.png'))
+    e.attachments.append(Attachment('./path/to/document.pdf'))
+
+    smtp = SMTP('mymailserver.com')
+    smtp.sendmail(*e.args)
+
 
 Dependencies
 ============
 
-Not sure yet. Probably going to require at least Python 3.2
+Pure Python.
+Should work with Python 2.7, Python 3.2 and Python 3.3
 
 License
 =======
