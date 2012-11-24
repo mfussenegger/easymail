@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __version__ = '0.1.0'
+__all__ = ['Attachment', 'Email']
 
 """
 easymail
@@ -61,17 +62,15 @@ class Attachment(object):
         the results concrete type depends on the attachments mimetype.
         """
         maintype, subtype = self.mimetype.split('/')
-        fp = open(self.path, 'rb')
-        if maintype == 'image':
-            msg = MIMEImage(fp.read(), _subtype=subtype)
-        elif maintype == 'audio':
-            msg = MIMEAudio(fp.read(), _subtype=subtype)
-        else:
-            msg = MIMEBase(maintype, subtype)
-            msg.set_payload(fp.read())
-            encoders.encode_base64(msg)
-
-        fp.close()
+        with open(self.path, 'rb') as fp:
+            if maintype == 'image':
+                msg = MIMEImage(fp.read(), _subtype=subtype)
+            elif maintype == 'audio':
+                msg = MIMEAudio(fp.read(), _subtype=subtype)
+            else:
+                msg = MIMEBase(maintype, subtype)
+                msg.set_payload(fp.read())
+                encoders.encode_base64(msg)
 
         msg.add_header('Content-Disposition',
                        'attachment',
@@ -83,7 +82,7 @@ class Email(object):
     def __init__(self, sender, recipients, subject='', body=''):
         self.sender = sender
 
-        if isinstance(recipients, str):
+        if isinstance(recipients, basestring):
             self.recipients = [recipients]
         else:
             self.recipients = recipients
@@ -119,7 +118,12 @@ class Email(object):
             self._subject = value
         assert isinstance(self._subject, Header)
 
+    @property
+    def args(self):
+        return (self.sender, self.all_recipients, self.get_msg())
+
     def get_msg(self):
+        # python 3.3 doesn't like the utf-8 charset if the body is empty.
         charset = self.body != '' and 'utf-8' or 'us-ascii'
 
         if self.attachments or self.body_is_html:
@@ -139,6 +143,9 @@ class Email(object):
             msg.attach(body)
 
         if self.attachments:
+            if not self.body_is_html:
+                msg.attach(MIMEText(self.body, _charset=charset))
+
             for attachment in self.attachments:
                 msg.attach(attachment.as_msg())
 

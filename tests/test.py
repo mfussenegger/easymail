@@ -24,6 +24,25 @@ class TestAttachment(TestCase):
         msg = str(a.as_msg())
         self.assertTrue('attachment; filename="440Hz-5sec.mp3' in msg[:200])
 
+    def test_msg_contains_body_and_attachment(self):
+        e = Email('sender@foo.com', 'recipient@foo.com', 'subject', 'fubar')
+        e.attachments.append(Attachment('./tests/440Hz-5sec.mp3'))
+
+        # body will be base64 encoded:
+        self.assertTrue('ZnViYXI=' in str(e)[:500])
+        self.assertTrue('filename="440Hz' in str(e)[:800])
+
+    def test_msg_contains_html_body_and_attachment(self):
+        e = Email('sender@foo.com', 'recipient@foo.com', 'subject')
+        e.body = '<html><body><b>fubar</b></body></html>'
+        e.body_is_html = True
+        e.attachments.append(Attachment('./tests/440Hz-5sec.mp3'))
+
+        # body will be base64 encoded:
+        self.assertTrue('PGh0bWw+PGJvZHk+PGI+ZnViYXI8L2I+PC9ib2R5PjwvaHRtbD4='
+                        in str(e)[:500])
+        self.assertTrue('filename="440Hz' in str(e)[:800])
+
 
 class TestEmail(TestCase):
     def test_subject_encoding(self):
