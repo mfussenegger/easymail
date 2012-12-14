@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 from distutils.core import setup
+
+if os.path.isfile('README.md'):
+    readme = open('README.md').read()
+else:
+    readme = ''
 
 
 setup(
@@ -10,13 +16,14 @@ setup(
     author='Mathias Fussenegger',
     author_email='pip@zignar.net',
     url='http://pypi.python.org/pypi/easymail/',
-    license='LICENSE.txt',
+    license='MIT',
     description='abstraction layer on top of the email package to make sending\
     emails a little bit easier',
+    long_description=readme,
     packages=['easymail'],
-    install_requires=[
-    ],
+    platforms=['any'],
     classifiers=[
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.2',
