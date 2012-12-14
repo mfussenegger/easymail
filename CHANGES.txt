@@ -1,0 +1,14 @@
+CHANGES
+=======
+
+
+Unreleased
+==========
+
+ - added docstrings
+
+
+2012-14-12 0.2.0
+================
+
+ - first proper release

@@ -48,14 +48,19 @@ class Attachment(object):
     def __init__(self, path, mimetype=None, filename=None):
         """create an attachment
 
-        path: path to the file on disk
-        mimetype: (optional, will be guessed by fileextension
-        filename: filename in the email,
-                  if None the name from path will be used
+        :param path: path to the file on disk
+        :param mimetype: (optional, will be guessed by fileextension
+        :param filename: filename in the email,
+                         if None the name from path will be used
         """
+
+        #: full path to the attachment
         self.path = path
+
+        #: mimetype of the attachment
         self.mimetype = mimetype or (guess_type(path)[0] or
                                      'application/octet-stream')
+        #: filename of the attachment in the email
         self.filename = filename
 
     def as_msg(self):
@@ -82,6 +87,16 @@ class Attachment(object):
 
 class Email(object):
     def __init__(self, sender, recipients, subject='', body=''):
+        """
+
+        :param sender: email of the sender. E.g. 'me@mydomain.com'
+                       or in the format 'My Name <me@mydomain.com>'
+        :param recipients: a :class:`list` of recipients in the same format as sender.
+                           ['one@recipient.com', 'Two <two@recipient.com>']
+        :param subject: email subject
+        :param body: email body.
+                     If it contains HTML `body_is_html` needs to be set to True
+        """
         self.sender = sender
 
         if isinstance(recipients, basestring):
@@ -94,8 +109,11 @@ class Email(object):
         self.reply_to = ''
         self.cc = []
         self.bcc = []
+
+        #: Mail body
         self.body = body
-        self.body_is_html = False
+
+        self._body_is_html = False
 
     def __repr__(self):
         return '<Email>'
@@ -104,12 +122,26 @@ class Email(object):
         return self.get_msg()
 
     @property
+    def body_is_html(self):
+        """If set to `True` the email will be sent as HTML
+        Otherwise a regular plain/text email will be sent.
+
+        :returns: :class:`bool`
+        """
+        return self._body_is_html
+
+    @body_is_html.setter
+    def body_is_html(self, value):
+        self._body_is_html = value
+
+    @property
     def all_recipients(self):
         """recipients including cc and bcc"""
         return self.recipients + self.cc + self.bcc
 
     @property
     def subject(self):
+        """subject of the email"""
         return unicode(self._subject)
 
     @subject.setter
@@ -122,6 +154,17 @@ class Email(object):
 
     @property
     def args(self):
+        """ *e.args can be used for :func:`smtplib.SMTP.sendemail`
+
+        >>> e = Email('Sender <sender@mydomain.com>',
+        ...           ['rec1@dom.com', 'rec2@dom.com'],
+        ...           'subject',
+        ...           'body')
+        >>> e.args  # doctest:+ELLIPSIS
+        ('Sender <sender@mydomain.com>', ['rec1@dom.com', 'rec2@dom.com'], ...
+
+        :returns: :class:`tuple`
+        """
         return (self.sender, self.all_recipients, self.get_msg())
 
     def get_msg(self):
