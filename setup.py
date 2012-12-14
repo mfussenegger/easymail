@@ -15,5 +15,17 @@ setup(
     emails a little bit easier',
     packages=['easymail'],
     install_requires=[
-    ]
+    ],
+    classifiers=[
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: MIT License',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Software Development',
+        'Topic :: System :: Networking',
+    ],
 )
