@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from easymail import __version__
+
 import os
 from distutils.core import setup
 
@@ -12,7 +14,7 @@ else:
 
 setup(
     name='easymail',
-    version='0.1.0',
+    version=__version__,
     author='Mathias Fussenegger',
     author_email='pip@zignar.net',
     url='http://pypi.python.org/pypi/easymail/',

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __all__ = ['Attachment', 'Email']
 
 """
@@ -50,10 +50,12 @@ class Attachment(object):
 
         path: path to the file on disk
         mimetype: (optional, will be guessed by fileextension
-        filename: filename in the email, if None the name from path will be used
+        filename: filename in the email,
+                  if None the name from path will be used
         """
         self.path = path
-        self.mimetype = mimetype or guess_type(path)[0] or 'application/octet-stream'
+        self.mimetype = mimetype or (guess_type(path)[0] or
+                                     'application/octet-stream')
         self.filename = filename
 
     def as_msg(self):
