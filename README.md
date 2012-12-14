@@ -1,6 +1,8 @@
 easymail
 ========
 
+[![Build Status](https://secure.travis-ci.org/mfussenegger/easymail.png?branch=master)](https://travis-ci.org/mfussenegger/easymail)
+
 The email package in pythons standard library is pretty low level.
 Easymail aims to add an abstraction layer on top that sets some (hopefully) sane
 defaults.
