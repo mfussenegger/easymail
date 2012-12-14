@@ -6,4 +6,4 @@ install:
   - pip install pep8
 script: 
   - pep8 easymail
-  - nosetests
+  - nosetests -c .nose.cfg
