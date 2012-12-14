@@ -91,7 +91,7 @@ class Email(object):
 
         :param sender: email of the sender. E.g. 'me@mydomain.com'
                        or in the format 'My Name <me@mydomain.com>'
-        :param recipients: a :class:`list` of recipients in the same format as sender.
+        :param recipients: a :class:`list` of recipients.
                            ['one@recipient.com', 'Two <two@recipient.com>']
         :param subject: email subject
         :param body: email body.
