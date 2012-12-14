@@ -17,7 +17,7 @@ setup(
     version=__version__,
     author='Mathias Fussenegger',
     author_email='pip@zignar.net',
-    url='http://pypi.python.org/pypi/easymail/',
+    url='https://github.com/mfussenegger/easymail',
     license='MIT',
     description='abstraction layer on top of the email package to make sending\
     emails a little bit easier',
