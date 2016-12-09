@@ -42,8 +42,7 @@ Slightly more advanced:
 Dependencies
 ============
 
-Pure Python.
-Should work with Python 2.7, Python 3.2 and Python 3.3
+Pure Python 3.5+
 
 License
 =======

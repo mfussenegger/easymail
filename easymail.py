@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__version__ = '0.2.0'
-__all__ = ['Attachment', 'Email']
-
 """
 easymail
 
@@ -24,6 +21,7 @@ All to make your life a little bit easier and make sending emails easier.
 ['recipient@foo.com']
 """
 
+
 import os
 import logging
 from mimetypes import guess_type
@@ -35,13 +33,10 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
-logger = logging.getLogger('easyemail')
 
-try:
-    unicode
-except NameError:
-    # Python3
-    basestring = unicode = str
+
+__all__ = ['Attachment', 'Email']
+logger = logging.getLogger(__file__)
 
 
 class Attachment(object):
@@ -99,7 +94,7 @@ class Email(object):
         """
         self.sender = sender
 
-        if isinstance(recipients, basestring):
+        if isinstance(recipients, str):
             self.recipients = [recipients]
         else:
             self.recipients = recipients
@@ -142,11 +137,11 @@ class Email(object):
     @property
     def subject(self):
         """subject of the email"""
-        return unicode(self._subject)
+        return str(self._subject)
 
     @subject.setter
     def subject(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             self._subject = Header(value, 'utf-8')
         else:
             self._subject = value
@@ -197,3 +192,8 @@ class Email(object):
         result = str(msg)
         logger.debug(result)
         return result
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

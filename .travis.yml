@@ -1,9 +1,11 @@
 language: python
+sudo: false
+cache: pip
 python:
-  - "2.7"
-  - "3.2"
-install:
-  - pip install pep8
+  - 3.5
+  - 3.6-dev
 script: 
-  - pep8 easymail
-  - nosetests -c .nose.cfg
+  - python -m doctest easymail.py -v
+
+notifications:
+    email: false
