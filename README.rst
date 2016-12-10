@@ -1,7 +1,22 @@
+========
 easymail
 ========
 
-[![Build Status](https://secure.travis-ci.org/mfussenegger/easymail.png?branch=master)](https://travis-ci.org/mfussenegger/easymail)
+.. image:: https://travis-ci.org/mfussenegger/easymail.svg?branch=master
+    :target: https://travis-ci.org/mfussenegger/easymail
+    :alt: travis-ci
+
+.. image:: https://img.shields.io/pypi/wheel/easymail.svg
+    :target: https://pypi.python.org/pypi/easymail/
+    :alt: Wheel
+
+.. image:: https://img.shields.io/pypi/v/easymail.svg
+   :target: https://pypi.python.org/pypi/easymail/
+   :alt: PyPI Version
+
+.. image:: https://img.shields.io/pypi/pyversions/easymail.svg
+   :target: https://pypi.python.org/pypi/easymail/
+   :alt: Python Version
 
 The email package in pythons standard library is pretty low level.
 Easymail aims to add an abstraction layer on top that sets some (hopefully) sane
@@ -9,11 +24,11 @@ defaults.
 
 These defaults include:
 
-* using utf-8 encoding by default. 
-* important headers (like Date)
+- using utf-8 encoding by default. 
+- important headers (like Date)
 
 
-A simple example:
+A simple example::
 
     from easymail import Email
     from smtplib import SMTP
@@ -24,7 +39,7 @@ A simple example:
     smtp = SMTP('mymailserver.com')
     smtp.sendmail(*e.args)
 
-Slightly more advanced:
+Slightly more advanced::
 
     from easymail import Email, Attachment
     from smtplib import SMTP
@@ -43,8 +58,3 @@ Dependencies
 ============
 
 Pure Python 3.5+
-
-License
-=======
-
-Easymail is licensed under the MIT license.
